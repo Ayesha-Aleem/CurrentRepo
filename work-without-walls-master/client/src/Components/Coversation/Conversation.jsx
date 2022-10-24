@@ -1,28 +1,29 @@
 
 import { useEffect, useState } from "react";
 import "./conversation.css";
-import {getMessage} from "../../api/index"
+import { getFriednsConversation} from "../../api/index"
 import defaultAvatar from "../../Images/noavator.png"
 // spelling is wrong
 
 export default function Conversation({ conversation, currentUser }) {
   const [user, setUser] = useState(null);
-  const PF = "";
+const userImg=conversation.members.find((m)=>m!==currentUser._id)
 
-  // useEffect(() => {
-  //   const friendId = conversation.members.find((m) => m !== currentUser._id);
+  useEffect(() => {
+    const friendId = conversation.members.find((m) => m !== currentUser._id);
 
-  //   const getUser = async () => {
-  //     try {
-  //       const res = await getMessage(friendId);
-  //       console.log("res", res.data)
-  //       setUser(res.data);
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   };
-  //   getUser();
-  // }, [currentUser, conversation]);
+    const getUser = async () => {
+      try {
+        const res = await  getFriednsConversation(currentUser._id,friendId);
+        console.log("res", res.data)
+        setUser(res.data);
+        console.log("user",user);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getUser();
+  }, [currentUser, conversation]);
 
 
   return (
@@ -30,13 +31,13 @@ export default function Conversation({ conversation, currentUser }) {
       <img
         className="conversationImg"
         src={
-          currentUser?.profileImg
-            ? currentUser.profileImg
+          userImg?.profileImg
+            ? userImg?.profileImg
             :  defaultAvatar
         }
         alt=""
       />
-      <span className="conversationName">{`${currentUser?.firstname} ${currentUser?.lastname}`}</span>
+      <span className="conversationName">{`${user?.firstname} ${user?.lastname}`}</span>
     </div>
   );
 }
