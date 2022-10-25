@@ -33,17 +33,18 @@ export default function Messenger() {
 
   useEffect(() => {
     arrivalMessage &&
-      currentChat?.members.find(record=>record?._id===arrivalMessage.sender) &&
+      currentChat?.members.find(
+        (record) => record?._id === arrivalMessage.sender
+      ) &&
       setMessages((prev) => [...prev, arrivalMessage]);
   }, [arrivalMessage, currentChat]);
 
   useEffect(() => {
     socket.current.emit("addUser", { user: user._id });
     socket.current.on("getUsers", (users) => {
-      console.log("online users", users);
-      setOnlineUsers(users?.filter((f) => users.some((u) => u.userId === f)));
+      setOnlineUsers(Object.entries(users).map((r) => r[1]));
     });
-  }, []);
+  }, [user?._id]);
 
   useEffect(() => {
     const getConversations = async () => {

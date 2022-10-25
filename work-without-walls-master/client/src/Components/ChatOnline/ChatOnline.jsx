@@ -3,7 +3,12 @@ import "./chatOnline.css";
 import { getConversation, getFriednsConversation } from "../../api/index";
 import defaultAvatar from "../../Images/noavator.png";
 
-export default function ChatOnline({ profileImg,onlineUsers, currentId, setCurrentChat }) {
+export default function ChatOnline({
+  profileImg,
+  onlineUsers,
+  currentId,
+  setCurrentChat,
+}) {
   const [friends, setFriends] = useState([]);
   const [onlineFriends, setOnlineFriends] = useState([]);
 
@@ -17,7 +22,7 @@ export default function ChatOnline({ profileImg,onlineUsers, currentId, setCurre
   }, [currentId]);
 
   useEffect(() => {
-    if(onlineUsers && onlineUsers?.length > 0){
+    if (onlineUsers && onlineUsers?.length > 0) {
       setOnlineFriends(friends?.filter((f) => onlineUsers.includes(f._id)));
     }
   }, [onlineUsers]);
@@ -31,11 +36,16 @@ export default function ChatOnline({ profileImg,onlineUsers, currentId, setCurre
     }
   };
 
-
   return (
     <div className="chatOnline">
-      {onlineFriends.map((o) => (
-        <div className="chatOnlineFriend" onClick={() => handleClick(o)}>
+      {onlineUsers.map((o) => (
+        <div
+          style={{
+            pointerEvents: `${o._id === currentId ? "none" : "all"}`,
+          }}
+          className="chatOnlineFriend"
+          onClick={() => handleClick(o)}
+        >
           <div className="chatOnlineImgContainer">
             <img
               className="chatOnlineImg"
@@ -44,7 +54,9 @@ export default function ChatOnline({ profileImg,onlineUsers, currentId, setCurre
             />
             <div className="chatOnlineBadge"></div>
           </div>
-          <span className="chatOnlineName">{o?.username}</span>
+          <span className="chatOnlineName">{`${o?.firstname} ${o?.lastname} ${
+            o._id === currentId && "(Me)"
+          }`}</span>
         </div>
       ))}
     </div>
