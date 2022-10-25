@@ -55,7 +55,7 @@ export default function ChatOnline({
             <div className="chatOnlineBadge"></div>
           </div>
           <span className="chatOnlineName">{`${o?.firstname} ${o?.lastname} ${
-            o._id === currentId && "(Me)"
+            o._id === currentId ? "(Me)" : ""
           }`}</span>
         </div>
       ))}
