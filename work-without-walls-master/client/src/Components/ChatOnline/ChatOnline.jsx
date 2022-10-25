@@ -3,8 +3,7 @@ import "./chatOnline.css";
 import { getConversation, getFriednsConversation } from "../../api/index";
 import defaultAvatar from "../../Images/noavator.png";
 
-export default function ChatOnline({ onlineUsers, currentId, setCurrentChat }) {
-  console.log("onlinusers", onlineUsers, currentId);
+export default function ChatOnline({ profileImg,onlineUsers, currentId, setCurrentChat }) {
   const [friends, setFriends] = useState([]);
   const [onlineFriends, setOnlineFriends] = useState([]);
 

@@ -30,30 +30,41 @@ cloudinary.config({
 });
 
 /* Sockets */
-
+const onlineUsers = []
 io.on("connection", (socket) => {
   //when connect
   console.log("a user connected.");
 
   //take userId and socketId from user
-  socket.on("addUser", (userId) => {
-    io.emit("getUsers", users);
+  socket.on("addUser", (data) => {
+    onlineUsers.push(data.user)
+    io.emit("getUsers",onlineUsers);
+  });
+  socket.on("join", (data) => {
+    console.log(data);
+    socket.join(data.conversationId);
   });
 
   //send and get message
-  socket.on("sendMessage", async ({ senderId, receiverId, text }) => {
-    console.log(senderId, receiverId, text);
-    console.log(user);
-    io.to(user?.socketId).emit("getMessage", {
-      senderId,
-      text,
-    });
-  });
+  socket.on(
+    "sendMessage",
+    async ({ senderId, receiverId, text, conversationId }) => {
+      await Message.create({
+        text,
+        conversationId,
+        sender: senderId,
+      });
+      io.sockets.in(conversationId).emit("getMessage", {
+        senderId,
+        text,
+      });
+    }
+  );
 
   //when disconnect
   socket.on("disconnect", () => {
     console.log("a user disconnected!");
-    io.emit("getUsers", users);
+    io.emit("getUsers");
   });
 });
 
@@ -64,6 +75,9 @@ const home = require("./routes/Home");
 const admin = require("./routes/admin");
 const jobs = require("./routes/job.routes");
 const dbConnection = require("./database/connection");
+const Message = require("./models/Message");
+const User = require("./models/User");
+const Team=require("./routes/Team.routes");
 
 dbConnection();
 app.use(cors());
@@ -78,7 +92,7 @@ app.use("/api", routes);
 app.use("/auth", auth);
 app.use("/admin", admin);
 app.use("/Job", jobs);
-
+app.use("/Team",Team);
 app.use("/api/conversations", conversationRoute);
 app.use("/api/messages", messageRoute);
 server.listen(PORT, () => console.log(`Server is Running on ${PORT}`));

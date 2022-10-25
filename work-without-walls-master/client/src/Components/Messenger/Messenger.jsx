@@ -5,7 +5,7 @@ import Message from "../Message/Message";
 import ChatOnline from "../ChatOnline/ChatOnline";
 import { useContext, useEffect, useRef, useState } from "react";
 import { UserContext } from "../../context/user.context";
-import {AddMessages,getMessage,getConversation} from "../../api/index"
+import { AddMessages, getMessage, getConversation } from "../../api/index";
 import { io } from "socket.io-client";
 
 export default function Messenger() {
@@ -20,7 +20,8 @@ export default function Messenger() {
   const scrollRef = useRef();
 
   useEffect(() => {
-    socket.current = io("ws://localhost:8000");
+    socket.current = io("ws://localhost:7900"); //
+
     socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         sender: data.senderId,
@@ -32,18 +33,17 @@ export default function Messenger() {
 
   useEffect(() => {
     arrivalMessage &&
-      currentChat?.members.includes(arrivalMessage.sender) &&
+      currentChat?.members.find(record=>record?._id===arrivalMessage.sender) &&
       setMessages((prev) => [...prev, arrivalMessage]);
   }, [arrivalMessage, currentChat]);
 
   useEffect(() => {
-    socket.current.emit("addUser", user._id);
+    socket.current.emit("addUser", { user: user._id });
     socket.current.on("getUsers", (users) => {
-      setOnlineUsers(
-        users?.filter((f) => users.some((u) => u.userId === f))
-      );
+      console.log("online users", users);
+      setOnlineUsers(users?.filter((f) => users.some((u) => u.userId === f)));
     });
-  }, [user]);
+  }, []);
 
   useEffect(() => {
     const getConversations = async () => {
@@ -77,32 +77,36 @@ export default function Messenger() {
       conversationId: currentChat._id,
     };
 
-    
     const receiverId = currentChat.members.find(
       (member) => member !== user._id
-      );
-      
+    );
+
     socket.current.emit("sendMessage", {
       senderId: user._id,
       receiverId,
       text: newMessage,
+      conversationId: currentChat?._id,
     });
 
     try {
-      const res = await AddMessages( message);
-      const newEntry = messages[0]
-      newEntry.text = newMessage
+      const res = await AddMessages(message);
+      const newEntry = messages[0];
+      newEntry.text = newMessage;
       setMessages([...messages, newEntry]);
       setNewMessage("");
     } catch (err) {
       console.log(err);
     }
   };
+  useEffect(() => {
+    socket.current.emit("join", {
+      conversationId: currentChat?._id,
+    });
+  }, [currentChat]);
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-
 
   return (
     <>
@@ -125,7 +129,13 @@ export default function Messenger() {
                 <div className="chatBoxTop">
                   {messages.map((m) => (
                     <div ref={scrollRef}>
-                      <Message message={m} own={m.sender === user._id} />
+                      <Message
+                        member={currentChat.members.find(
+                          (m) => m._id !== user?._id
+                        )}
+                        message={m}
+                        own={m.sender === user._id}
+                      />
                     </div>
                   ))}
                 </div>

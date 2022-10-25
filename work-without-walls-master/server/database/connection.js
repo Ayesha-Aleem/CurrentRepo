@@ -4,7 +4,7 @@ const dbConnection = () => {
   try {
     mongoose
       .connect(
-        "mongodb+srv://soban:msoban123@cluster0.ln9ys.mongodb.net/ayesha",
+        "mongodb://localhost:27017/fyp",
         {
           connectTimeoutMS: 20000,
           useNewUrlParser: true,
