@@ -29,10 +29,6 @@ export default function Messenger() {
         createdAt: Date.now(),
       });
     });
-    return () =>
-      socket.current.emit("offline", {
-        user: user?._id,
-      });
   }, [user?._id]);
 
   useEffect(() => {

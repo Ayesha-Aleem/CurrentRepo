@@ -9,22 +9,9 @@ export default function ChatOnline({
   currentId,
   setCurrentChat,
 }) {
-  const [friends, setFriends] = useState([]);
-  const [onlineFriends, setOnlineFriends] = useState([]);
-
+  const [online, setOnline] = useState([]);
   useEffect(() => {
-    const getFriends = async () => {
-      const res = await getConversation(currentId);
-      setFriends(res.data);
-    };
-
-    getFriends();
-  }, [currentId]);
-
-  useEffect(() => {
-    if (onlineUsers && onlineUsers?.length > 0) {
-      setOnlineFriends(friends?.filter((f) => onlineUsers.includes(f._id)));
-    }
+    setOnline(onlineUsers);
   }, [onlineUsers]);
 
   const handleClick = async (user) => {
@@ -39,11 +26,23 @@ export default function ChatOnline({
   return (
     <div className="chatOnline">
       <div className="chatMenu">
-      <div className="chatMenuWrapper">
-            <input placeholder="Start New Conversation" className="chatMenuInput" />
+        <div className="chatMenuWrapper">
+          <input
+            onChange={({ target: { value } }) =>
+              setOnline(
+                onlineUsers.filter((record) =>
+                  `${record.firstname?.toLowerCase()} ${record?.lastname?.toLowerCase()}`.includes(
+                    value.toLowerCase()
+                  )
+                )
+              )
+            }
+            placeholder="Search users"
+            className="chatMenuInput"
+          />
+        </div>
       </div>
-      </div>
-      {onlineUsers.map((o) => (
+      {online.map((o) => (
         <div
           style={{
             pointerEvents: `${o._id === currentId ? "none" : "all"}`,
