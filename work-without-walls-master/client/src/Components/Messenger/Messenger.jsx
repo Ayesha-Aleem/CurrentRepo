@@ -29,7 +29,11 @@ export default function Messenger() {
         createdAt: Date.now(),
       });
     });
-  }, []);
+    return () =>
+      socket.current.emit("offline", {
+        user: user?._id,
+      });
+  }, [user?._id]);
 
   useEffect(() => {
     arrivalMessage &&
@@ -42,7 +46,9 @@ export default function Messenger() {
   useEffect(() => {
     socket.current.emit("addUser", { user: user._id });
     socket.current.on("getUsers", (users) => {
-      setOnlineUsers(Object.entries(users).map((r) => r[1]));
+      console.log(users);
+      if (users[user?._id])
+        setOnlineUsers(Object.entries(users).map((r) => r[1]));
     });
   }, [user?._id]);
 
