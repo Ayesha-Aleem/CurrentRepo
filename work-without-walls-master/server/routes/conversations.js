@@ -35,9 +35,13 @@ router.get("/:userId", protect, async (req, res) => {
 router.get("/find/:firstUserId/:secondUserId", protect, async (req, res) => {
   //done
   try {
-    const conversation = await Conversation.findOne({
-      members: { $all: [req.params.firstUserId, req.params.secondUserId] },
-    });
+    const conversation = await Conversation.findOneAndReplace(
+      {
+        members: { $all: [req.params.firstUserId, req.params.secondUserId] },
+      },
+      { members: [req.params.firstUserId, req.params.secondUserId] },
+      { upsert: true, new: true }
+    );
     res.status(200).json(conversation);
   } catch (err) {
     res.status(500).json(err);
