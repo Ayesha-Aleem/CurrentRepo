@@ -38,6 +38,11 @@ export default function ChatOnline({
 
   return (
     <div className="chatOnline">
+      <div className="chatMenu">
+      <div className="chatMenuWrapper">
+            <input placeholder="Start New Conversation" className="chatMenuInput" />
+      </div>
+      </div>
       {onlineUsers.map((o) => (
         <div
           style={{

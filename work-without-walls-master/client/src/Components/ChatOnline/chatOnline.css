@@ -10,7 +10,16 @@
     position: relative;
     margin-right: 10px;
   }
+  .chatMenu {
+    flex: 3.5;
+  }
   
+  .chatMenuInput {
+    width: 90%;
+    padding: 10px 0;
+    border: none;
+    border-bottom: 1px solid gray;
+  }
   .chatOnlineImg {
     width: 40px;
     height: 40px;
