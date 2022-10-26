@@ -42,7 +42,6 @@ export default function Messenger() {
   useEffect(() => {
     socket.current.emit("addUser", { user: user._id });
     socket.current.on("getUsers", (users) => {
-      console.log(users);
       if (users[user?._id])
         setOnlineUsers(Object.entries(users).map((r) => r[1]));
     });
@@ -117,7 +116,6 @@ export default function Messenger() {
       <div className="messenger">
         <div className="chatMenu">
           <div className="chatMenuWrapper">
-            <input placeholder="Search for friends" className="chatMenuInput" />
             {conversations.map((c) => (
               <div onClick={() => setCurrentChat(c)}>
                 <Conversation conversation={c} currentUser={user} />

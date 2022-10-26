@@ -1,21 +1,24 @@
 import { useEffect, useState } from "react";
-import "./conversation.css";
-import { getFriednsConversation } from "../../api/index";
 import defaultAvatar from "../../Images/noavator.png";
+import "./conversation.css";
 
-export default function Conversation({ profileImg,conversation, currentUser }) {
+export default function Conversation({
+  profileImg,
+  conversation,
+  currentUser,
+}) {
   const [user, setUser] = useState(null);
   const userImg = conversation.members.find((m) => {
     return m._id !== currentUser._id;
   });
 
   useEffect(() => {
-    setUser(conversation?.members.find(member=>{
-      return member._id!==currentUser?._id
-    }))
-  
-  }, [conversation])
-  
+    setUser(
+      conversation?.members.find((member) => {
+        return member._id !== currentUser?._id;
+      })
+    );
+  }, [conversation, currentUser?._id]);
 
   return (
     <div className="conversation">
