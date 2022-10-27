@@ -5,6 +5,8 @@ import Button from 'react-bootstrap/Button';
 import "bootstrap/dist/css/bootstrap.min.css";
 import TextField from "@material-ui/core/TextField";
 import BuyerNavBar from "../navbars/BuyerNavbar"
+import { Link } from "react-router-dom";
+import Bid from "../Bid/Bid"
 const Second = () => {
     const [title, settitle] = useState("title");
     const [leader,setLeader]=useState("leader Name");
@@ -21,7 +23,7 @@ const Second = () => {
         <>
         <BuyerNavBar />
              <div className="container con">
-     <Button className="contact" variant="outline-primary">Contact Now</Button>
+     <Button className="contact" variant="outline-primary" onClick={<Bid/>}>Contact Now</Button>
        <div className="row justify-content-center">
           <div className="col-md-5">
             <div className="row ">
