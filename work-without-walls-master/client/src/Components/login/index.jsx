@@ -75,7 +75,7 @@ const Login = () => {
     <div>
       <HomeNavBar />
       {isLoading && <Loading />}
-      <div className="container con">
+      <div className="container cont">
         <div className="row ro">
           <div className=" col1 c1">
             <img src={frame} alt="frame" />

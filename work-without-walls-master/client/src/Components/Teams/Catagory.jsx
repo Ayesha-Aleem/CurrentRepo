@@ -33,7 +33,7 @@ const Catagory = () => {
             <Row>
               <Col>
                 <Link
-                  to=""
+                  to="/sellerTeam"
                   className="link_upload"
                   onClick={(e) => {
                     setCatagory("Web Development");

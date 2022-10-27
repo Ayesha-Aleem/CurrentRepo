@@ -35,7 +35,7 @@ const BuyerTeamCategory = () => {
             <Row>
               <Col>
                 <Link
-                  to=""
+                 to="/first"
                   className="link_upload"
                   onClick={(e) => {
                     setCatagory("Web Development");
@@ -50,7 +50,7 @@ const BuyerTeamCategory = () => {
               </Col>
               <Col>
                 <Link
-                  to=""
+                  to="/first"
                   className="link_upload"
                   onClick={(e) => {
                     setCatagory("DataBase");

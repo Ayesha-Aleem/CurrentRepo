@@ -4,11 +4,24 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useContext } from "react";
 import { UserContext } from "../context/user.context";
+import  { logoutUser } from "../api";
+import "./navbars/sellerNavbar.css"
+import Button from 'react-bootstrap/Button';
 const Admin = () => {
   const navigate = useNavigate();
   const [currentBtnState, setcurrentBtnState] = useState("dashboard");
   const [allUsers, setallUsers] = useState([]);
   const { setuser } = useContext(UserContext);
+  const logoutUserClick = async () => {
+    try {
+      await logoutUser();
+    } catch (e) {
+      // do nothing
+    }
+    localStorage.removeItem("user");
+    setuser(null);
+    navigate("/login");
+  };
   useEffect(() => {
     axios
       .get("/api/")
@@ -55,74 +68,88 @@ const Admin = () => {
   };
 
   return (
-    <div>
-      <div className="bg-dark">
-        <Link to="/">
-          <img src={logo} style={{ padding: "1rem" }}></img>
-        </Link>
+    <>
+       <div className="topbarContainer ">
+          <div className="topbarLeft">
+            <Link to="/" style={{ textDecoration: "none" }}>
+                <span className="logo">
+                  <img
+                    className="pic"
+                    src={logo}
+                    alt=""
+                  ></img>
+                </span>
+            </Link>
+            </div>
       </div>
+
       <div className="row">
-        <div className="col-2 ">
-          <nav className="bg-dark vh-100">
-            <ul class="nav  bg-dark mb-0">
-              <li class="nav-item" style={{ padding: "1rem" }}>
-                <button
+        <div className="col-2 cb" >
+          <nav className="vh-100">
+            <ul class="mb-0 und">
+              <li class="nav-item" style={{ paddingTop: "5rem" }}>
+                <Button
                   onClick={() => setcurrentBtnState("dashboard")}
-                  class="btn btn-light btn-block btn-sm rounded"
+                  variant="outline-secondary"
+                  size="md"
                 >
                   {" "}
                   Dashboard{" "}
-                </button>
+                </Button>
               </li>
-              <li class="nav-item" style={{ padding: "1rem" }}>
-                <button
+              <li class="nav-item" style={{marginTop:"1.5rem"}}>
+                <Button
                   onClick={() => setcurrentBtnState("view")}
-                  class="btn btn-light btn-block btn-sm rounded"
+                  variant="outline-primary"
+                  size="md"
                 >
                   {" "}
                   View Profile{" "}
-                </button>
+                </Button>
               </li>
-              <li class="nav-item" style={{ padding: "0.5rem" }}>
-                <button
+              <li class="nav-item" style={{marginTop:"1.5rem"}} >
+                <Button
                   onClick={() => setcurrentBtnState("delete")}
-                  class="btn btn-light btn-sm"
+                  variant="outline-danger"
+                  size="md"
                 >
                   {" "}
                   Delete Account{" "}
-                </button>
+                </Button>
               </li>
-              <li class="nav-item" style={{ padding: "1rem" }}>
-                <button
+              <li class="nav-item" style={{marginTop:"1.5rem"}}>
+                <Button
                   onClick={() => setcurrentBtnState("block")}
-                  class="btn btn-light btn-block btn-sm rounded"
+                  variant="outline-danger"
+                  size="md"
                 >
                   {" "}
                   Block Account{" "}
-                </button>
+                </Button>
               </li>
-              <li class="nav-item ml-auto" style={{ padding: "1rem" }}>
-                <button
+              <li class="nav-item" style={{marginTop:"2rem",marginLeft:"5rem"}}>
+                <Button
                   onClick={() => {
                     localStorage.removeItem("user");
                     setuser(null);
                     navigate("/login");
                   }}
-                  class="btn btn-light btn-block btn-sm  rounded"
+                  variant="outline-info"
+                  size="md"
                 >
                   {" "}
                   Logout{" "}
-                </button>
+                </Button>
               </li>
             </ul>
           </nav>
         </div>
-        <div className="col-9" style={{ padding: "1rem" }}>
+        <div className="col-9" style={{ padding: "2rem" }}>
           <div className="container">
             {allUsers.map((user) => (
               <div
-                className="container text-black pt-2"
-                style={{ border: "1px solid black", backgroundColor: "gray" }}
+                className="container text-black pt-2 jh"
+                style={{ border: "1px solid black" }}
                 key={user._id}
               >
                 <p>
@@ -136,15 +163,15 @@ const Admin = () => {
                 </p>
                 <p>
                   {" "}
-                  <i style={{ fontWeight: "bold" }}>Cnic:</i> {user["CNIC"]}
+                  <i style={{ fontWeight: "bold" }}>Cnic Number:</i> {user["CNIC"]}
                 </p>
                 <p>
                   {" "}
-                  <i style={{ fontWeight: "bold" }}>Cnic:</i> <a href={user["cnicFront"]}></a>{user["cnicFront"]}
+                  <i style={{ fontWeight: "bold" }}>Cnic front:</i> <a href={user["cnicFront"]}>{user["cnicFront"]}</a>
                 </p>
                 <p>
                   {" "}
-                  <i style={{ fontWeight: "bold" }}>Cnic:</i> <a href={user["cnicBack"]}>{user["cnicBack"]} </a>
+                  <i style={{ fontWeight: "bold" }}>Cnic Back:</i> <a href={user["cnicBack"]}>{user["cnicBack"]} </a>
                 </p>
                 <p>
                   {" "}
@@ -152,7 +179,7 @@ const Admin = () => {
                 </p>
                 {currentBtnState === "view" && (
                   <>
-                    <button
+                    <Button
                       className={`btn btn-primary btn-sm ${
                         user.approve ? "disabled" : ""
                       }`}
@@ -162,41 +189,42 @@ const Admin = () => {
                       }}
                     >
                       Approve
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                       className={`btn btn-danger btn-sm ${
                         user.approve ? "" : "disabled"
                       }`}
                       onClick={() => disapproveUser(user._id)}
                     >
                       Disapprove
-                    </button>
+                    </Button>
                   </>
                 )}
                 {currentBtnState === "delete" && (
-                  <button
+                  <Button
                     className="btn btn-danger btn-sm"
                     onClick={() => deleteUser(user._id)}
                   >
                     Delete
-                  </button>
+                  </Button>
                 )}
                 {currentBtnState === "block" && (
-                  <button
+                  <Button
                     className={`btn btn-danger btn-sm ${
                       user.approve ? "" : "disabled"
                     }`}
                     onClick={() => blockUser(user._id)}
                   >
                     Block
-                  </button>
+                  </Button>
                 )}
               </div>
             ))}
           </div>
         </div>
       </div>
-    </div>
+    
+    </>
   );
 };
 
