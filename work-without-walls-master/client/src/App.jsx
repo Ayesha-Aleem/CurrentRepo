@@ -25,6 +25,8 @@ import CreateTeam from "./Components/Teams/CreateTeam";
 import Members from "./Components/Teams/Members";
 import TeamTitle from "./Components/Teams/TeamTitle";
 import { UserContext } from "./context/user.context";
+import Firstteam from "./Components/TeamBuyerEnd/Firstteam"
+import Second from "./Components/TeamBuyerEnd/SecondScreen"
 import { io } from "socket.io-client";
 function App() {
   const { user } = useContext(UserContext);
@@ -67,6 +69,8 @@ function App() {
           <Route path="/buyer-request" element={<BuyerReq />} />
           <Route path="/active-orders" element={<ActiveOrders />} />
           <Route path="/messages" element={<Messenger />} />
+          <Route path="/first" element={< Firstteam />} />
+          <Route path="/second" element={<Second />} />
         </Route>
       </>
     </Routes>

@@ -1,8 +1,9 @@
 import React from "react";
 import { useState } from "react";
-import "../css/firstteam.css";
+import "./firstteam.css";
 import BuyerNavBar from "../navbars/BuyerNavbar"
 import Button from 'react-bootstrap/Button';
+import { Link } from "react-router-dom";
 const Firstteam = () => {
     const [teamImg,setTeamImg]=useState("https://images.unsplash.com/photo-1589652717521-10c0d092dea9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80")
   const [title,setTitle]=useState("Title");
@@ -20,7 +21,8 @@ const Firstteam = () => {
       <p >{title} </p>
       <div className="head">
         <p><b>{leaderName}</b></p>
-        <Button variant="outline-primary">Details</Button>
+        <Link to="/second">
+        <Button variant="outline-primary">Details</Button></Link>
       </div>
       </div>
         </div>
