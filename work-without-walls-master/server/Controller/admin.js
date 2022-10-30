@@ -30,5 +30,5 @@ const deleteA = async (req, res) => {
 module.exports = {
   approve,
   deleteA,
-  block,
+
 };
