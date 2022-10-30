@@ -191,7 +191,12 @@ const JobComponent = ({ job, onSubmit, onDelete }) => {
           </div>
           <div className="mt-3 ">
             <i>
-              <img className="font-weight-bold mb-1 pl-3" src={job.img1} />
+              {/* <img className="font-weight-bold mb-1 pl-3" src={job.img1} /> */}
+              <i>
+                <a className="font-weight-bold mb-1 px-4" href={job.img1}>
+                  Attached Image
+                </a>
+              </i>
             </i>
             {edit ? (
               <span style={editStyle}>

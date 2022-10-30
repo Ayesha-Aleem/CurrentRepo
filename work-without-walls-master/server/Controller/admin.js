@@ -15,6 +15,8 @@ const approve = async (req, res) => {
   );
 };
 
+
+
 const deleteA = async (req, res) => {
   User.findByIdAndDelete(req.params.id, (err, user) => {
     if (err) {
@@ -28,4 +30,5 @@ const deleteA = async (req, res) => {
 module.exports = {
   approve,
   deleteA,
+  block,
 };

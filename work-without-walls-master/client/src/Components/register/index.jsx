@@ -37,6 +37,7 @@ function Register() {
     } catch (error) {
       setIsLoading(false);
       console.log(error);
+      alert("User Already exist")
     }
   };
 
