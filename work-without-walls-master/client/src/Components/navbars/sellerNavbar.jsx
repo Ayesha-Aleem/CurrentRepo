@@ -57,19 +57,19 @@ const SellerNavBar = () => {
             <Link className="text-light" to="/">
               <BsFillBellFill />
             </Link>
-            <span className="topbarIconBadge"></span>
+           
           </div>
           <div className="topbarIconItem">
             <Link className=" text-light" to="/messages">
               <BsChatTextFill />
             </Link>
-            <span className="topbarIconBadge"></span>
+         
           </div>
           <div className="topbarIconItem">
             <Link className=" text-light" to="/catagory">
               <BsFillPeopleFill />
             </Link>
-            <span className="topbarIconBadge"></span>
+        
           </div>
         </div>
       </div>

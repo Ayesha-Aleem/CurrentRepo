@@ -10,7 +10,7 @@ import PostYourGIG from "./Components/PostYourGIG";
 import ProfileUser from "./Components/ProfileUser";
 import Register from "./Components/register";
 import Profile from "./Components/UserNavbar";
-
+import Analytics from "./Components/analytics/Analytics"
 // Team
 import { Route, Routes } from "react-router-dom";
 import Bid from "./Components/Bid/Bid";
@@ -73,6 +73,7 @@ function App() {
           <Route path="/first" element={< Firstteam />} />
           <Route path="/second" element={<Second />} />
           <Route path="/sellerTeam" element={<SellerTeam />} />
+          <Route path="/analytics" element={<Analytics />} />
         </Route>
       </>
     </Routes>

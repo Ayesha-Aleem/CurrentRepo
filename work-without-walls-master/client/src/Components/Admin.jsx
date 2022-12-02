@@ -7,6 +7,16 @@ import { UserContext } from "../context/user.context";
 import  { logoutUser } from "../api";
 import "./navbars/sellerNavbar.css"
 import Button from 'react-bootstrap/Button';
+import {
+  CDBSidebar,
+  CDBSidebarContent,
+  CDBSidebarFooter,
+  CDBSidebarHeader,
+  CDBSidebarMenu,
+  CDBSidebarMenuItem,
+} from 'cdbreact';
+import { NavLink } from 'react-router-dom';
+import {SidebarMenu, SidebarMenuBrand, SidebarMenuFooter, SidebarMenuHeader } from 'react-bootstrap-sidebar-menu';
 const Admin = () => {
   const navigate = useNavigate();
   const [currentBtnState, setcurrentBtnState] = useState("dashboard");
@@ -68,164 +78,68 @@ const Admin = () => {
   };
 
   return (
-    <>
-       <div className="topbarContainer ">
-          <div className="topbarLeft">
-            <Link to="/" style={{ textDecoration: "none" }}>
-                <span className="logo">
+   <div className="container" style={{margin:"0px 0px 0px 0px",padding:"0px 0px 0px 0px"}}>
+    <div className="row">
+   <div
+      style={{ display: 'flex', height: '100vh', overflow: 'scroll initial' }}
+      className="col col-3"
+    >
+      <CDBSidebar textColor="#fff" backgroundColor="#1877f2">
+        <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>}>
+          <Link to="/" style={{ textDecoration: "none" }}>
                   <img
-                    className="pic"
+                       className="text-decoration-none"
+                       style={{ textDecoration: "none",
+                       width:"170px",height:"170px",
+                      marginLeft:"-30px",marginTop:"-53px" }}
                     src={logo}
                     alt=""
                   ></img>
-                </span>
+               
             </Link>
-            </div>
-      </div>
+        </CDBSidebarHeader>
 
-      <div className="row">
-        <div className="col-2 cb" >
-          <nav className="vh-100">
-            <ul class="mb-0 und">
-              <li class="nav-item" style={{ paddingTop: "5rem" }}>
-                <Button
-                  onClick={() => setcurrentBtnState("dashboard")}
-                  variant="outline-secondary"
-                  size="md"
-                >
-                  {" "}
-                  Dashboard{" "}
-                </Button>
-              </li>
-              <li class="nav-item" style={{marginTop:"1.5rem"}}>
-                <Button
-                  onClick={() => setcurrentBtnState("view")}
-                  variant="outline-primary"
-                  size="md"
-                >
-                  {" "}
-                  View Profile{" "}
-                </Button>
-              </li>
-              <li class="nav-item" style={{marginTop:"1.5rem"}} >
-                <Button
-                  onClick={() => setcurrentBtnState("delete")}
-                  variant="outline-danger"
-                  size="md"
-                >
-                  {" "}
-                  Delete Account{" "}
-                </Button>
-              </li>
-              <li class="nav-item" style={{marginTop:"1.5rem"}}>
-                <Button
-                  onClick={() => setcurrentBtnState("block")}
-                  variant="outline-danger"
-                  size="md"
-                >
-                  {" "}
-                  Block Account{" "}
-                </Button>
-              </li>
-              <li class="nav-item" style={{marginTop:"2rem",marginLeft:"5rem"}}>
-                <Button
-                  onClick={() => {
-                    localStorage.removeItem("user");
-                    setuser(null);
-                    navigate("/login");
-                  }}
-                  variant="outline-info"
-                  size="md"
-                >
-                  {" "}
-                  Logout{" "}
-                </Button>
-              </li>
-            </ul>
-          </nav>
-        </div>
-        <div className="col-9" style={{ padding: "2rem" }}>
-          <div className="container">
-            {allUsers.map((user) => (
-              <div
-                className="container text-black pt-2 jh"
-                style={{ border: "1px solid black" }}
-                key={user._id}
-              >
-                <p>
-                  {" "}
-                  <i style={{ fontWeight: "bold" }}>Name:</i> {user.firstname}{" "}
-                  {user.lastname}
-                </p>
-                <p>
-                  {" "}
-                  <i style={{ fontWeight: "bold" }}>Email:</i> {user.email}
-                </p>
-                <p>
-                  {" "}
-                  <i style={{ fontWeight: "bold" }}>Cnic Number:</i> {user["CNIC"]}
-                </p>
-                <p>
-                  {" "}
-                  <i style={{ fontWeight: "bold" }}>Cnic front:</i> <a href={user["cnicFront"]}>{user["cnicFront"]}</a>
-                </p>
-                <p>
-                  {" "}
-                  <i style={{ fontWeight: "bold" }}>Cnic Back:</i> <a href={user["cnicBack"]}>{user["cnicBack"]} </a>
-                </p>
-                <p>
-                  {" "}
-                  <i style={{ fontWeight: "bold" }}>Phone:</i> {user.phone}
-                </p>
-                {currentBtnState === "view" && (
-                  <>
-                    <Button
-                      className={`btn btn-primary btn-sm ${
-                        user.approve ? "disabled" : ""
-                      }`}
-                      onClick={() => {
-                        approveUser(user._id);
-                        console.log(user._id, user.approve);
-                      }}
-                    >
-                      Approve
-                    </Button>
-                    <Button
-                      className={`btn btn-danger btn-sm ${
-                        user.approve ? "" : "disabled"
-                      }`}
-                      onClick={() => disapproveUser(user._id)}
-                    >
-                      Disapprove
-                    </Button>
-                  </>
-                )}
-                {currentBtnState === "delete" && (
-                  <Button
-                    className="btn btn-danger btn-sm"
-                    onClick={() => deleteUser(user._id)}
-                  >
-                    Delete
-                  </Button>
-                )}
-                {currentBtnState === "block" && (
-                  <Button
-                    className={`btn btn-danger btn-sm ${
-                      user.approve ? "" : "disabled"
-                    }`}
-                    onClick={() => blockUser(user._id)}
-                  >
-                    Block
-                  </Button>
-                )}
-              </div>
-            ))}
+        <CDBSidebarContent className="sidebar-content">
+          <CDBSidebarMenu>
+            <NavLink exact to="/admin" activeClassName="activeClicked">
+              <CDBSidebarMenuItem icon="columns">Dashboard</CDBSidebarMenuItem>
+            </NavLink>
+            <NavLink exact to="/analytics" activeClassName="activeClicked">
+              <CDBSidebarMenuItem icon="chart-line">
+                Analytics
+              </CDBSidebarMenuItem>
+            </NavLink>
+
+            <NavLink
+              exact
+              onClick={logoutUserClick}
+              target="_blank"
+              activeClassName="activeClicked"
+            >
+              <CDBSidebarMenuItem icon="arrow-right">
+                Logout
+              </CDBSidebarMenuItem>
+            </NavLink>
+          </CDBSidebarMenu>
+        </CDBSidebarContent>
+
+        <CDBSidebarFooter style={{ textAlign: 'center' }}>
+          <div
+            style={{
+              padding: '20px 5px',
+            }}
+          >
+            @offcial
           </div>
-        </div>
-      </div>
-    
-    </>
-  );
-};
+        </CDBSidebarFooter>
+      </CDBSidebar>
+    </div>
+  <div  className="col col-9">
+    <h3 className="mt-3 font-weight-bold  text-left" >Welcome to Dashboard</h3>
+  </div>
+  </div>
+  </div>
+);
+}
 
 export default Admin;

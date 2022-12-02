@@ -24,7 +24,7 @@ const Second = () => {
         <>
         <BuyerNavBar />
              <div className="container con">
-     <Link><Button className="ct" variant="outline-primary">Contact Now</Button></Link>
+     <Link><Button style={{marginLeft:"24rem",marginBottom:"3rem"}} className="ct" variant="outline-primary">Contact Now</Button></Link>
        <div className="row justify-content-center">
           <div className="col-md-5">
             <div className="row ">
@@ -43,7 +43,7 @@ const Second = () => {
               <div className="col">
               <TextField
                   required
-                  defaultValue={Member1}
+                  placeholder={Member1}
                   id="standard-required"
                   variant="standard"
                 />
@@ -51,7 +51,7 @@ const Second = () => {
         <br/>
                 <TextField
           required
-          defaultValue={Member2}
+          placeholder={Member2}
           id="standard-required"
           variant="standard"
         />
@@ -59,7 +59,7 @@ const Second = () => {
         <br/>
         <TextField
          required
-         defaultValue={Member3}
+         placeholder={Member3}
          id="standard-required"
          variant="standard"
         />
@@ -67,7 +67,7 @@ const Second = () => {
         <br/>
         <TextField
           required
-          defaultValue={Member4}
+          placeholder={Member4}
           id="standard-required"
           variant="standard"
         />
@@ -75,7 +75,7 @@ const Second = () => {
               <div className="col">
               <TextField
           required
-          defaultValue={R1}
+          placeholder={R1}
           id="standard-required"
           variant="standard"
         />
@@ -83,7 +83,7 @@ const Second = () => {
         <br/>
         <TextField
           required
-          defaultValue={R2}
+          placeholder={R2}
           id="standard-required"
           variant="standard"
         />
@@ -91,7 +91,7 @@ const Second = () => {
         <br/>
         <TextField
          required
-         defaultValue={R3}
+         placeholder={R3}
          id="standard-required"
          variant="standard"
         />
@@ -99,7 +99,7 @@ const Second = () => {
         <br/>
         <TextField
           required
-          defaultValue={R4}
+          placeholder={R4}
           id="standard-required"
           variant="standard"
         />
