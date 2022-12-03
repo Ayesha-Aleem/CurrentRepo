@@ -12,7 +12,6 @@ router.put("/forgotpass", async (req,res)=>{
       { _id: user._id, name: user.name },
       process.env.RESET_PASSWORD_KEY,{expiresIn:'20m'}
     );
-   
    var resetUrl = 'http' + '://' + 'localhost' + ':' + 3000 + '/ResetPassword/' + token
    
     let transporter = nodemailer.createTransport({

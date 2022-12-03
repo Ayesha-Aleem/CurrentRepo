@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "react-bootstrap/Button";
 import {Container} from "@mui/material";
@@ -6,11 +6,29 @@ import Avatar from "@material-ui/core/Avatar";
 import { BsLockFill } from "react-icons/bs";
 import "./Login.css";
 import  HomeNavBar from "../navbars/HomeNavBar"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+
 const ResetPassword = () => {
   const navigate = useNavigate();
+  const {resetLink}=useParams();
+  const [isLoading, setIsLoading] = useState(false);
+  const [password, setNewPassword] = useState("");
+  const [link, setNewLink] = useState("");
   const onSubmit = () => {
-    navigate("/login")
+    if(password===" "){
+     alert("Enter password to recover")
+     setIsLoading(false)
+    }
+    else{
+      axios.put("/fr/reset",{
+        resetLink,
+        newPass:password})
+      setIsLoading(true)
+      alert("Update Successfully")
+      navigate("/login")
+
+    }
   };
   return (  
     <>
@@ -40,12 +58,14 @@ const ResetPassword = () => {
             label="Password"
             type="password"
             name="password"
+            onChange={(e) => setNewPassword(e.target.value)}
           />
           <Button className="login__button " 
           type="submit" 
           block color="primary"
+          onClick={onSubmit}
           style={{marginLeft:"110px"}}>
-            Reset Password
+            {isLoading ? "Loading ..." : " Reset Password"}
           </Button>
           
         </form>
