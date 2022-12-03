@@ -2,13 +2,15 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const nodemailer = require('nodemailer');
 router.put("/forgotpass", async (req,res)=>{
  
     let user = await User.findOne({ email: req.body.email });
     if (!user) return res.status(400).send("User Not Registered");
     let token = jwt.sign(
       { _id: user._id, name: user.name },
-      process.env.RESET_PASSWORD_KEY,{expiresIn:'5m'}
+      process.env.RESET_PASSWORD_KEY,{expiresIn:'20m'}
     );
    
    var resetUrl = 'http' + '://' + 'localhost' + ':' + 3000 + '/ResetPassword/' + token
@@ -20,8 +22,8 @@ router.put("/forgotpass", async (req,res)=>{
           secure: false,
           requireTLS: true,
       auth: {
-        user: 'ayeshaaleem2@hotmail.com',
-        pass: 'Fatima@yesha102A9'
+        user: 'ameerhamza1710@outlook.com',
+        pass: 'ameerhamza1616'
         
         
       },
@@ -31,7 +33,7 @@ router.put("/forgotpass", async (req,res)=>{
     });
    
    const mailOptions = {
-      from:'ayeshaaleem2@hotmail.com', // sender address
+      from:'ameerhamza1710@outlook.com', // sender address
       to: req.body.email,
       subject: 'reset password link from WorkWithout walls.!!',// Subject line
       text: 'email sent using node js.\n',
@@ -61,7 +63,7 @@ router.put("/forgotpass", async (req,res)=>{
     }).clone();
   });
 
-  router.put("/reset", async (req,res)=>{
+router.put("/reset", async (req,res)=>{
     const {resetLink,newPass}=req.body;
     //console.log(resetLink);
     if(resetLink){
@@ -79,15 +81,16 @@ router.put("/forgotpass", async (req,res)=>{
                 }
               
           user.password=newPass
-    
-          await user .generateHashedPassword();
+          const salt = await bcrypt.genSalt(10);
+          const hashedPaswword = await bcrypt.hash(newPass, salt);
+          user.password=hashedPaswword
           user.resetLink=''
           
                 user.save((err,result)=>{
                   if(err){
                     return res.status(400).json({error:"reset password error"});
                   }else{
-                    return res.status(200).json({message:'Your password has been changes'})
+                    return res.status(200).json({message:'Your password has been changed'})
                   }
                 })
         })
