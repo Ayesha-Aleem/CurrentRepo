@@ -10,13 +10,17 @@ const paging= async (req, res) => {
 }
 
 const sort=async(req,res)=> {
-        let{sort,asc}=req.query;
-        asc=-1;
-        const users=User.find().sort({approve:true})
-        res.send({users})
+        const users=await User.find().sort("-createdAt")
+        res.send(users)
   }
 
-
-
-
-  module.exports={paging,sort}
+const search=async(req,res)=>{
+const users=await User.find(req.query)
+res.send(users)
+}
+//filtering through approve and rating
+const filter=async(req,res)=>{
+    const users=await User.find(req.query)
+    res.send(users)
+    }
+  module.exports={paging,sort,search,filter}

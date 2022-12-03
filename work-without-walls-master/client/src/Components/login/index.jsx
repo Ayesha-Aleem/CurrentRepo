@@ -29,7 +29,7 @@ const Login = () => {
   });
 
   const handleForget = () => {
-    navigate("/forgot");
+    navigate("/ForgetPassword");
   };
 
   useEffect(() => {

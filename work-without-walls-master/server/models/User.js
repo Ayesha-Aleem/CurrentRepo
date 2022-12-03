@@ -88,6 +88,10 @@ const userSchema = new Schema({
     type:String,
     default: '',
   },
+  resetLink:{
+    type:String,
+    default:'',
+  },
 },
 { timestamps: true });
 

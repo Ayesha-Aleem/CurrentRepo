@@ -61,6 +61,7 @@ const signup = asyncHandler(async (req, res) => {
         token: generateTOKEN(user._id),
         approve: false,
         userrole: "user",
+        resetLink:"",
 
       });
     });

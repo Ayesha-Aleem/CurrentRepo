@@ -79,6 +79,7 @@ const Message = require("./models/Message");
 const User = require("./models/User");
 const Team = require("./routes/Team.routes");
 const pf=require("./routes/psfs.routes")
+const fr=require("./routes/forgot&reset")
 dbConnection();
 app.use(cors());
 app.use(express.json());
@@ -96,4 +97,5 @@ app.use("/Team", Team);
 app.use("/api/conversations", conversationRoute);
 app.use("/api/messages", messageRoute);
 app.use("/PSFS",pf);
+app.use("/fr",fr);
 server.listen(PORT, () => console.log(`Server is Running on ${PORT}`));
