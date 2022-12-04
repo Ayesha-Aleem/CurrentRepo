@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./screen.css"
 import logo from "../../Images/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -8,8 +9,7 @@ import  { logoutUser } from "../../api";
 import "../navbars/sellerNavbar.css"
 import Dropdown from 'react-bootstrap/Dropdown';
 import { HiFilter } from 'react-icons/hi'
-import './screen.css'
-import Button from 'react-bootstrap/Button';
+import Pagination from "../pagination/Pagination"
 import {
   CDBSidebar,
   CDBSidebarContent,
@@ -24,6 +24,13 @@ const Admin = () => {
   const [currentBtnState, setcurrentBtnState] = useState(false);
   const [allUsers, setallUsers] = useState([]);
   const { setuser } = useContext(UserContext);
+  const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage, setPostsPerPage] = useState(1);
+
+const [search,setsearchterm]=useState("");
+const[posts,setPosts]=useState([]);
+const[loading,setLoading]=useState(false)
+
   const logoutUserClick = async () => {
     try {
       await logoutUser();
@@ -34,20 +41,27 @@ const Admin = () => {
     setuser(null);
     navigate("/login");
   };
-  useEffect(() => {
-    axios
-      .get("/api/")
-      .then((res) => {
-        setallUsers(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, [currentBtnState]);
+ useEffect(()=>{ //done
+  axios.get("/PSFS/sorting").then((res) => {
+    setallUsers(res.data);
+  })
+  .catch((err) => console.log(err))
+ })
+  const loadpost=async()=>{
+    const response=await axios.get("/api/");
+    setPosts(response.data)
+    setLoading(false)
+    loadpost()
+  }
+ 
+
 
   const approveUser = (id) => {
     axios
       .put(`/admin/approve-user/${id}`, { approve: true })
       .then((res) => {
         console.log(res.data);
+        window?.location?.reload();
       })
       .catch((err) => console.log(err));
   };
@@ -56,6 +70,7 @@ const Admin = () => {
       .put(`/admin/approve-user/${id}`, { approve: false })
       .then((res) => {
         console.log(res.data);
+        window?.location?.reload()
       })
       .catch((err) => console.log(err));
   };
@@ -65,6 +80,7 @@ const Admin = () => {
       .put(`/admin/approve-user/${id}`, { approve: false })
       .then((res) => {
         console.log(res.data);
+        window?.location?.reload()
       })
       .catch((err) => console.log(err));
   };
@@ -74,6 +90,7 @@ const Admin = () => {
       .delete(`/admin/delete-user/${id}`)
       .then((res) => {
         console.log(res.data);
+        window?.location?.reload()
       })
       .catch((err) => console.log(err));
   };
@@ -136,13 +153,91 @@ const Admin = () => {
       </CDBSidebar>
     </div>
   <div  className="col col-md-9">
-  <h1  className="d-flex justify-content-start">Welcome to Dashboard</h1>
-  <br/>
-  <div className="row" style={{width:"140%"}}>
+      <h1  className="d-flex justify-content-start">Welcome to Dashboard</h1>
+      <br/>
+      <div className="row" style={{width:"140%"}}>
         <div className="col-12">
           <div className="row d-flex justify-content-end">
             <div className="col col-md-6 d-flex justify-content-end">
-              <input className="nosubmit"  type="search" placeholder="Search..." />
+              <input  
+              className="nosubmit"
+              type="text" 
+              placeholder="Search..." 
+              onChange={(e)=>{setsearchterm(e.target.value)}}
+              />
+
+              {loading? (<h4>Loading...</h4>):
+              (posts.filter((value)=>{
+                if(search === "") {
+                  return value;
+                }
+                else if(value.firstname?.includes(search)) {
+                  console.log(value,search)
+                  return value;
+                }
+              }).   
+              map(item=><div className="col col-md-12 my-4  content ">
+              <div className="row row-md-12 ">
+              <div className="col-md-6" >
+                <div className="my-3 row">
+                  <div className="col-md-4 d-flex justify-content-end fw-bold">Name</div>
+                  <div className="col-md-6"><p className='inppppp' type="text" >{item.firstname}{" "}
+                    {item.lastname}</p></div>
+                </div>
+                <div className="my-3 row">
+                  <div className="col-md-4 d-flex justify-content-end fw-bold">Email</div>
+                  <div className="col-md-6"><p className='inppppp' type="text" >{item.email}</p></div>
+                </div>
+                <div className="my-3 row">
+                  <div className="col-md-4 d-flex justify-content-end fw-bold">Phone</div>
+                  <div className="col-md-6"><p className='inppppp' type="text">{item.phone}</p> </div>
+                </div>
+                <div className="my-3 row">
+                  <div className="col-md-4 d-flex justify-content-end fw-bold">CINIC Number</div>
+                  <div className="col-md-6"><p className='inppppp' type="text">{item["CNIC"]}</p></div>
+                </div>
+                <div className="my-3 row">
+                  <div className="col-md-4 d-flex justify-content-end fw-bold">CINIC Front</div>
+                  <div className="col-md-6"><p className='inpppppu' type="text"> <a href={item["cnicFront"]}>{item["cnicFront"]}</a></p> </div>
+                </div>
+                <div className="my-3 row">
+                  <div className="col-md-4 d-flex justify-content-end fw-bold">CINIC Back</div>
+                  <div className="col-md-6"><p className='inpppppu' type="text"> <a href={item["cnicBack"]}>{item["cnicFront"]}</a></p></div>
+                </div>
+                
+              </div>
+              <div className="col-md-3" ></div>
+              <div className="col-md-3">
+               
+                <button
+                      className={'butnn'}
+                onClick={() => {
+                          approveUser(item._id);
+                          setcurrentBtnState(true);
+                          console.log(item._id, item.approve);
+                        }} style={{background:"#025EE5"} }>
+                          Approve
+                </button>
+                <button className='butnn '  
+                onClick={() => disapproveUser(item._id)} 
+                style={{background:"#FE7676"}}>
+                  Dennied
+                  </button>
+                <button className='butnn' 
+                 onClick={() => deleteUser(item._id)} 
+                 style={{background:"black"}}>
+                  Block
+                  </button>
+                <button className='butnn' 
+                onClick={() => blockUser(item._id)} 
+                style={{background:"#FE0000"}}>
+                  Delete
+                  </button>
+              </div>
+              
+              </div>
+            </div>))}
+
             </div>
             <div className="d-flex justify-content-end col col-md-6">
               <Dropdown>
@@ -153,8 +248,7 @@ const Admin = () => {
 
                 <Dropdown.Menu>
                   <Dropdown.Item href="#/action-1"> alphabetical names</Dropdown.Item>
-                  <Dropdown.Item href="#/action-2">Created at</Dropdown.Item>
-                  <Dropdown.Item href="#/action-3">Category</Dropdown.Item>
+                  <Dropdown.Item href="#/action-2">rating</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </div>
@@ -162,30 +256,30 @@ const Admin = () => {
           {allUsers.map((user) => (
           <div className="col col-md-12 my-4  content ">
             <div className="row row-md-12 ">
-            <div className="col-md-6">
+            <div className="col-md-6" >
               <div className="my-3 row">
-                <div className="col-md-4 fw-bold">Name</div>
+                <div className="col-md-4 d-flex justify-content-end fw-bold">Name</div>
                 <div className="col-md-6"><p className='inppppp' type="text" >{user.firstname}{" "}
                   {user.lastname}</p></div>
               </div>
               <div className="my-3 row">
-                <div className="col-md-4 fw-bold">Email</div>
+                <div className="col-md-4 d-flex justify-content-end fw-bold">Email</div>
                 <div className="col-md-6"><p className='inppppp' type="text" >{user.email}</p></div>
               </div>
               <div className="my-3 row">
-                <div className="col-md-4 fw-bold">Phone</div>
+                <div className="col-md-4 d-flex justify-content-end fw-bold">Phone</div>
                 <div className="col-md-6"><p className='inppppp' type="text">{user.phone}</p> </div>
               </div>
               <div className="my-3 row">
-                <div className="col-md-4 fw-bold">CINIC Number</div>
+                <div className="col-md-4 d-flex justify-content-end fw-bold">CINIC Number</div>
                 <div className="col-md-6"><p className='inppppp' type="text">{user["CNIC"]}</p></div>
               </div>
               <div className="my-3 row">
-                <div className="col-md-4 fw-bold">CINIC Front</div>
+                <div className="col-md-4 d-flex justify-content-end fw-bold">CINIC Front</div>
                 <div className="col-md-6"><p className='inpppppu' type="text"> <a href={user["cnicFront"]}>{user["cnicFront"]}</a></p> </div>
               </div>
               <div className="my-3 row">
-                <div className="col-md-4 fw-bold">CINIC Back</div>
+                <div className="col-md-4 d-flex justify-content-end fw-bold">CINIC Back</div>
                 <div className="col-md-6"><p className='inpppppu' type="text"> <a href={user["cnicBack"]}>{user["cnicFront"]}</a></p></div>
               </div>
               
@@ -224,6 +318,12 @@ const Admin = () => {
           ))}
         </div>
       </div>
+      <Pagination
+                totalPosts={allUsers.length}
+                postsPerPage={postsPerPage}
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+            />
   </div>
   </div>
   </div>

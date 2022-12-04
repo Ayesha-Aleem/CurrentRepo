@@ -30,6 +30,7 @@ input.nosubmit {
     border-radius: 6px;
     margin: 0;
     padding: 0;
+
   }
   .butnn{
     display: block;
@@ -46,8 +47,8 @@ input.nosubmit {
     width: 100%;
     outline: none;
     border: 1px solid rgb(216, 216, 216);
-    padding: 3px;
-    border-radius: 6px;
+    padding: 2px;
+    border-radius: 8px;
   }
   .inpppppu{
     width: 250%;

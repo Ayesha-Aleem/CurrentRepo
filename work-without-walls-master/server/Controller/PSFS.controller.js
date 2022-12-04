@@ -10,7 +10,7 @@ const paging= async (req, res) => {
 }
 
 const sort=async(req,res)=> {
-        const users=await User.find().sort("-createdAt")
+        const users=await User.find().sort({approve:1})
         res.send(users)
   }
 
