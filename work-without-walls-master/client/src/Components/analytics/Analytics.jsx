@@ -56,6 +56,7 @@ const Analytics = () => {
     catch((e)=>console.log(e))
     console.log(emprate,empname)
   }),[])
+  console.log(chartData)
           return (
         <div className="container" style={{margin:"0px 0px 0px 0px",padding:"0px 0px 0px 0px"}}>
         <div className="row">
@@ -80,10 +81,10 @@ const Analytics = () => {
 
         <CDBSidebarContent className="sidebar-content">
           <CDBSidebarMenu>
-            <NavLink exact to="/admin" activeClassName="activeClicked">
+            <NavLink exact to="/admin" className="activeClicked">
               <CDBSidebarMenuItem icon="columns">Dashboard</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink exact to="/analytics" activeClassName="activeClicked">
+            <NavLink exact to="/analytics" className="activeClicked">
               <CDBSidebarMenuItem icon="chart-line">
                 Analytics
               </CDBSidebarMenuItem>
@@ -93,7 +94,7 @@ const Analytics = () => {
               exact
               onClick={logoutUserClick}
               target="_blank"
-              activeClassName="activeClicked"
+              className="activeClicked"
             >
               <CDBSidebarMenuItem icon="arrow-right">
                 Logout

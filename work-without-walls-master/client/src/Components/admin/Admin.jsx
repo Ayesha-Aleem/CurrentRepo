@@ -22,12 +22,9 @@ import { NavLink } from 'react-router-dom';
 const Admin = () => {
   const navigate = useNavigate();
   const [currentBtnState, setcurrentBtnState] = useState(false);
-  const [allUsers, setallUsers] = useState([]);
   const { setuser } = useContext(UserContext);
   const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(3);
-
-const [search,setsearchterm]=useState("");
 const[posts,setPosts]=useState([]);
 const[posts2,setPosts2]=useState([]);
 const[loading,setLoading]=useState(false)
@@ -35,7 +32,7 @@ const[loading,setLoading]=useState(false)
 const lastPostIndex = currentPage * postsPerPage;
     const firstPostIndex = lastPostIndex - postsPerPage;
     const currentPosts = posts2.slice(firstPostIndex, lastPostIndex);
-
+console.log(currentPosts)
   const logoutUserClick = async () => {
     try {
       await logoutUser();
@@ -171,9 +168,7 @@ useEffect((()=>{loadpost()}),[])
               type="text" 
               placeholder="Search..." 
               onChange={(e)=>{
-                setPosts2( posts.filter(param=>param.firstname.toLowerCase().includes(e.target.value))) || 
-                setPosts2(posts.filter(param=>param.email.toLowerCase().includes(e.target.value)))
-              ||  setPosts2(posts.filter(param=>param.CNIC.includes(e.target.value)))
+                setPosts2( posts.filter(param=>param.email.toLowerCase().includes(e.target.value))) 
             }} 
               />
 
@@ -254,7 +249,7 @@ useEffect((()=>{loadpost()}),[])
               </Dropdown>
             </div>
           </div>
-          {posts2.map((user) => (
+          {currentPosts.map((user) => (
           <div className="col col-md-12 my-4  content ">
             <div className="row row-md-12 ">
             <div className="col-md-6" >
@@ -319,8 +314,8 @@ useEffect((()=>{loadpost()}),[])
           ))}
         </div>
       </div>
-      <Pagination
-                totalPosts={allUsers.length}
+          <Pagination
+                totalPosts={posts2.length}
                 postsPerPage={postsPerPage}
                 setCurrentPage={setCurrentPage}
                 currentPage={currentPage}
