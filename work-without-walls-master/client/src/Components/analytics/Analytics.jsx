@@ -1,5 +1,15 @@
 import React,{ useState, useEffect } from "react";
 import {
+  Chart,
+  LineController,
+  LineElement,
+  PointElement,
+  LinearScale,
+  CategoryScale,
+  Title,
+  BarElement,
+} from 'chart.js'
+import {
     CDBSidebar,
     CDBSidebarContent,
     CDBSidebarFooter,
@@ -17,6 +27,15 @@ import { UserContext } from "../../context/user.context";
 import  { logoutUser } from "../../api";
 const Analytics = () => {
     const navigate = useNavigate();
+    Chart.register(
+      LineController,
+      LineElement,
+      BarElement,
+      PointElement,
+      LinearScale,
+      CategoryScale,
+      Title,
+    )
     const [allUsers, setallUsers] = useState([]);
     const { setuser } = useContext(UserContext);
     const logoutUserClick = async () => {
@@ -29,16 +48,34 @@ const Analytics = () => {
       setuser(null);
       navigate("/login");
     };
-    const [chartData,setChartData]=useState({})
-  useEffect((()=>{
     let emprate=[];
     let empname=[];
-    axios.get("/api/").then((res)=>{
-    for(const dataObj of res.data){
-      emprate.push(parseInt(dataObj.rate))
-      empname.push(`${dataObj.firstname}  ${dataObj.lastname}` )
+    useEffect((()=>{
+      axios.get("/api/").then((res)=>{
+      for(const dataObj of res.data){
+        emprate.push(parseInt(dataObj.rate))
+        empname.push(`${dataObj.firstname}  ${dataObj.lastname}` )
+      }
+      // setChartData({
+    
+      //   labels:empname,
+      //   datasets:[
+      //     {
+      //       label:"Chart according to rating",
+      //       data:emprate,
+      //       backgroundColor:["rgba(75,192,192,0.6)"],
+      //       borderwidth:4,
+      //     }
+      //   ]
+      // })
+      console.log("this is chart Data",chartData)
+      console.log(empname,emprate)
     }
-    setChartData({
+      
+      ).
+      catch((e)=>console.log(e))
+    }),[])
+    const [chartData,setChartData]=useState({
   
       labels:empname,
       datasets:[
@@ -49,14 +86,8 @@ const Analytics = () => {
           borderwidth:4,
         }
       ]
-    })
-  }
-    
-    ).
-    catch((e)=>console.log(e))
-    console.log(emprate,empname)
-  }),[])
-  console.log(chartData)
+    }
+    )
           return (
         <div className="container" style={{margin:"0px 0px 0px 0px",padding:"0px 0px 0px 0px"}}>
         <div className="row">
@@ -155,20 +186,6 @@ const Analytics = () => {
                         </div>
                         <hr/>
                        
-                    </div>
-                </div>
-
-          
-                <div className="card shadow mb-4">
-                    <div className="card-header py-3">
-                        <h6 className="m-0 font-weight-bold text-primary">Bar Chart</h6>
-                    </div>
-                    <div className="card-body">
-                        <div className="chart-bar">
-                            <canvas id="myBarChart"></canvas>
-                        </div>
-                        <hr/>
-                        
                     </div>
                 </div>
 
