@@ -47,24 +47,20 @@ const lastPostIndex = currentPage * postsPerPage;
     navigate("/login");
   };
  //done
- useEffect(() => {
-  const getP= axios.get("/PSFS/sorting").then((res) => {
-    setallUsers(res.data);
-  })
-  .catch((err) => console.log(err))
- 
- }, []);
- console.log(posts2)
- console.log(posts)
+ const getP=()=>{ axios.get("/PSFS/sorting").then((res) => {
+  setPosts2(res.data);
+})
+.catch((err) => console.log(err))
+ }
 
  
   const loadpost=async()=>{
     const response=await axios.get("/api/");
-    setPosts(response.data)
-    setLoading(false)
+    setPosts(response.data);
+    setLoading(false);
   }
  
-useEffect((()=>{   loadpost()}),[])
+useEffect((()=>{loadpost()}),[])
 
   const approveUser = (id) => {
     axios
@@ -175,7 +171,10 @@ useEffect((()=>{   loadpost()}),[])
               type="text" 
               placeholder="Search..." 
               onChange={(e)=>{
-                setPosts2( posts.filter(param=>param.firstname.toLowerCase().includes(e.target.value)))}}
+                setPosts2( posts.filter(param=>param.firstname.toLowerCase().includes(e.target.value))) || 
+                setPosts2(posts.filter(param=>param.email.toLowerCase().includes(e.target.value)))
+              ||  setPosts2(posts.filter(param=>param.CNIC.includes(e.target.value)))
+            }} 
               />
 
               {loading? (<h4>Loading...</h4>):
@@ -249,10 +248,8 @@ useEffect((()=>{   loadpost()}),[])
                   <HiFilter size={16}  />
                   Filter
                 </Dropdown.Toggle>
-
                 <Dropdown.Menu>
-                  <Dropdown.Item href="#/action-1"> alphabetical names</Dropdown.Item>
-                  <Dropdown.Item href="#/action-2">rating</Dropdown.Item>
+                  <Dropdown.Item onClick={getP}>Not approve</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </div>
