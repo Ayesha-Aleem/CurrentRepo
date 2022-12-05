@@ -10,7 +10,7 @@ import {
   import axios from 'axios';
   import { NavLink } from 'react-router-dom';
   import logo from "../../Images/logo.png";
-  import { Bar, Pie } from 'react-chartjs-2';
+ import {Line} from "react-chartjs-2"
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../../context/user.context";
@@ -29,9 +29,34 @@ const Analytics = () => {
       setuser(null);
       navigate("/login");
     };
-
+    const [chartData,setChartData]=useState({})
+  useEffect((()=>{
+    let emprate=[];
+    let empname=[];
+    axios.get("/api/").then((res)=>{
+    for(const dataObj of res.data){
+      emprate.push(parseInt(dataObj.rate))
+      empname.push(`${dataObj.firstname}  ${dataObj.lastname}` )
+    }
+    setChartData({
+  
+      labels:empname,
+      datasets:[
+        {
+          label:"Chart according to rating",
+          data:emprate,
+          backgroundColor:["rgba(75,192,192,0.6)"],
+          borderwidth:4,
+        }
+      ]
+    })
+  }
     
-    return (
+    ).
+    catch((e)=>console.log(e))
+    console.log(emprate,empname)
+  }),[])
+          return (
         <div className="container" style={{margin:"0px 0px 0px 0px",padding:"0px 0px 0px 0px"}}>
         <div className="row">
          <div
@@ -98,7 +123,34 @@ const Analytics = () => {
                     </div>
                     <div className="card-body">
                         <div className="chart-area">
-                            <canvas ></canvas>
+                       <Line
+          data={chartData}
+          options={{
+            responsive: true,
+            title: { text: "THICCNESS SCALE", display: true },
+            // scales: {
+            //   yAxes: [
+            //     {
+            //       ticks: {
+            //         autoSkip: true,
+            //         maxTicksLimit: 10,
+            //         beginAtZero: true
+            //       },
+            //       gridLines: {
+            //         display: false
+            //       }
+            //     }
+            //   ],
+            //   xAxes: [
+            //     {
+            //       gridLines: {
+            //         display: false
+            //       }
+            //     }
+            //   ]
+            // }
+          }}
+        />
                         </div>
                         <hr/>
                        

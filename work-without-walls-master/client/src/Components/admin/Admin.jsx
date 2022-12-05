@@ -25,11 +25,16 @@ const Admin = () => {
   const [allUsers, setallUsers] = useState([]);
   const { setuser } = useContext(UserContext);
   const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage, setPostsPerPage] = useState(1);
+    const [postsPerPage, setPostsPerPage] = useState(3);
 
 const [search,setsearchterm]=useState("");
 const[posts,setPosts]=useState([]);
+const[posts2,setPosts2]=useState([]);
 const[loading,setLoading]=useState(false)
+
+const lastPostIndex = currentPage * postsPerPage;
+    const firstPostIndex = lastPostIndex - postsPerPage;
+    const currentPosts = posts2.slice(firstPostIndex, lastPostIndex);
 
   const logoutUserClick = async () => {
     try {
@@ -41,20 +46,25 @@ const[loading,setLoading]=useState(false)
     setuser(null);
     navigate("/login");
   };
- useEffect(()=>{ //done
-  axios.get("/PSFS/sorting").then((res) => {
+ //done
+ useEffect(() => {
+  const getP= axios.get("/PSFS/sorting").then((res) => {
     setallUsers(res.data);
   })
   .catch((err) => console.log(err))
- })
+ 
+ }, []);
+ console.log(posts2)
+ console.log(posts)
+
+ 
   const loadpost=async()=>{
     const response=await axios.get("/api/");
     setPosts(response.data)
     setLoading(false)
-    loadpost()
   }
  
-
+useEffect((()=>{   loadpost()}),[])
 
   const approveUser = (id) => {
     axios
@@ -94,6 +104,7 @@ const[loading,setLoading]=useState(false)
       })
       .catch((err) => console.log(err));
   };
+
 
   return (
    <div className="container" style={{margin:"0px 0px 0px 0px",padding:"0px 0px 0px 0px"}}>
@@ -163,21 +174,14 @@ const[loading,setLoading]=useState(false)
               className="nosubmit"
               type="text" 
               placeholder="Search..." 
-              onChange={(e)=>{setsearchterm(e.target.value)}}
+              onChange={(e)=>{
+                setPosts2( posts.filter(param=>param.firstname.toLowerCase().includes(e.target.value)))}}
               />
 
               {loading? (<h4>Loading...</h4>):
-              (posts.filter((value)=>{
-                if(search === "") {
-                  return value;
-                }
-                else if(value.firstname?.includes(search)) {
-                  console.log(value,search)
-                  return value;
-                }
-              }).   
-              map(item=><div className="col col-md-12 my-4  content ">
-              <div className="row row-md-12 ">
+              (posts2.map((item)=>{
+              <div className="col col-md-12 my-4  content ">
+                <div className="row row-md-12 ">
               <div className="col-md-6" >
                 <div className="my-3 row">
                   <div className="col-md-4 d-flex justify-content-end fw-bold">Name</div>
@@ -236,7 +240,7 @@ const[loading,setLoading]=useState(false)
               </div>
               
               </div>
-            </div>))}
+            </div>}))}
 
             </div>
             <div className="d-flex justify-content-end col col-md-6">
@@ -253,7 +257,7 @@ const[loading,setLoading]=useState(false)
               </Dropdown>
             </div>
           </div>
-          {allUsers.map((user) => (
+          {posts2.map((user) => (
           <div className="col col-md-12 my-4  content ">
             <div className="row row-md-12 ">
             <div className="col-md-6" >
