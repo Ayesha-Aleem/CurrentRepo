@@ -80,6 +80,7 @@ const User = require("./models/User");
 const Team = require("./routes/Team.routes");
 const pf=require("./routes/psfs.routes")
 const fr=require("./routes/forgot&reset")
+const res=require("./routes/reset")
 dbConnection();
 app.use(cors());
 app.use(express.json());
@@ -98,4 +99,5 @@ app.use("/api/conversations", conversationRoute);
 app.use("/api/messages", messageRoute);
 app.use("/PSFS",pf);
 app.use("/fr",fr);
+app.use("/pass",res)
 server.listen(PORT, () => console.log(`Server is Running on ${PORT}`));

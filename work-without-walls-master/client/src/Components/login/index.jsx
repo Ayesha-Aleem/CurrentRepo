@@ -32,11 +32,7 @@ const Login = () => {
     navigate("/ForgetPassword");
   };
 
-  useEffect(() => {
-    if (user) {
-      navigate("/profile");
-    }
-  }, [user, navigate]);
+
   
   useEffect(() => {
     if (admin) {

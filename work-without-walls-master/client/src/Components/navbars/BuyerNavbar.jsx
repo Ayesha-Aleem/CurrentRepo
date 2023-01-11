@@ -90,9 +90,10 @@ const BuyerNavbar = () => {
               >
                 My orders 
               </Dropdown.Item>
-              <Dropdown.Item to="/">
+              <Dropdown.Item to="/settingb">
+              <Link className="text-black" to="/setting">
                 <BsGearWide className="mx-2" />
-                Settings
+                Settings</Link>
               </Dropdown.Item>
               <Dropdown.Item to="/" onClick={logoutUserClick}>
                 <BsLock className="mx-2" />

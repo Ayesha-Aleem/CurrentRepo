@@ -26,7 +26,7 @@ export const getYourJobs = ()=>Base.get("/Job/yourJob") //being map
 export const updateYourJobs = (id, data)=>Base.put(`/Job/updateJob/${id}`, data) //being updated
 export const deleteYourJobs = (id)=>Base.delete(`/Job/delete/${id}`) //being deleted
 export const updateProfile=(id, data)=>Base.put(`/api/profile/${id}`,data)//being updated
-
+export const rpass=(values)=>Base.put("/pass/reset-password",values);
 export const getConversation=(id)=>Base.get(`/api/conversations/${id}`)  //done
 export const getMessage=(id)=>Base.get(`/api/messages/${id}`)//done
 export const AddMessages=()=>Base.post("/api/messages")

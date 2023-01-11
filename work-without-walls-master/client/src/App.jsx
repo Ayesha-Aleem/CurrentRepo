@@ -30,6 +30,8 @@ import { UserContext } from "./context/user.context";
 import Firstteam from "./Components/TeamBuyerEnd/Firstteam"
 import Second from "./Components/TeamBuyerEnd/SecondScreen"
 import SellerTeam from "./Components/Teams-At-Seller-End/SellerTeam"
+import Setting from "./Components/setting/Setting"
+import SettingB from "./Components/setting/SettingB"
 function App() {
 
   return (
@@ -60,6 +62,8 @@ function App() {
           <Route path="/second" element={<Second />} />
           <Route path="/sellerTeam" element={<SellerTeam />} />
           <Route path="/analytics" element={<Analytics />} />
+          <Route path="/setting" element={<Setting/>}/>
+          <Route path="/settingb" element={<SettingB/>}/>
         </Route>
       </>
     </Routes>
