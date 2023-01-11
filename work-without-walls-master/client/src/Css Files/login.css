@@ -15,10 +15,9 @@
     width: 70%;
     padding: 0%;
 }
-
 .c1 img {
     width: 95%;
-
+    height: 100%;
 }
 
 .c2 {
@@ -84,4 +83,5 @@ padding-left: 5%;
 text-decoration: underline;
 cursor: pointer;
 }
+
 

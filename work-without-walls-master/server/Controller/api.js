@@ -35,7 +35,7 @@ const signup = asyncHandler(async (req, res) => {
     });
     const userExist = await User.findOne({ CNIC });
     if (userExist) {
-      res.status(400);
+      res.status(400).json({message:"User alraedy exist"});
 
       throw new Error("User already exists");
     }
