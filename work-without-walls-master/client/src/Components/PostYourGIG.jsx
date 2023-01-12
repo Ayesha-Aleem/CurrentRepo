@@ -61,7 +61,7 @@ const submithandler=async()=>{
                         className="fa fa-camera fa-3x my-4 mx-4"
                         aria-hidden="true"
                       ></i>
-                      <span className="ml-2">Add Image</span>
+                      <span >Add Image</span>
                     </div>
                   )}
                 </div>

@@ -83,5 +83,12 @@ padding-left: 5%;
 text-decoration: underline;
 cursor: pointer;
 }
-
+@media only screen and (max-width: 1024px){
+    .c1{
+    display:none;
+    }
+    .c2{
+        width: 100%;
+    }
+}
 
