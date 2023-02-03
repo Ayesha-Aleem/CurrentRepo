@@ -91,7 +91,7 @@ const BuyerNavbar = () => {
                 My orders 
               </Dropdown.Item>
               <Dropdown.Item to="/settingb">
-              <Link className="text-black" to="/setting">
+              <Link className="text-black" to="/settingb">
                 <BsGearWide className="mx-2" />
                 Settings</Link>
               </Dropdown.Item>
